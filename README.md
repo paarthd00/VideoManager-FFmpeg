@@ -14,8 +14,13 @@
         - Add Watermark On multiple videos
 
 - Menu Items
+
 [ ] Video
+
 [ ] Audio
+
 [ ] History
+
 [ ] Profile
+
 [ ] Settings

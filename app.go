@@ -13,7 +13,17 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/joho/godotenv"
+	"gorm.io/gorm"
 )
+
+type Video struct {
+	gorm.Model
+	Title     string
+	Size      int64
+	Duration  int
+	Thumbnail string
+	Source    string
+}
 
 type File struct {
 	Name string
@@ -40,11 +50,22 @@ func NewApp() *App {
 }
 
 func (a *App) startup(ctx context.Context) {
+	DB, err := Connection()
+	if err != nil {
+		fmt.Println("Error connecting to database:", err)
+		return
+	}
+	DB.AutoMigrate(&Video{})
 	a.ctx = ctx
 }
 
 func (a *App) GetPresignedUrl(file File) string {
 	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Error loading .env file:", err)
+		return ""
+	}
+
 	s3Config := &aws.Config{
 		Region: aws.String(os.Getenv("BUCKET_REGION")),
 		Credentials: credentials.NewStaticCredentials(

@@ -3,8 +3,8 @@ import logo from './assets/images/logo-universal.png';
 import './App.css';
 import { Greet } from "../wailsjs/go/main/App";
 import axios from 'axios';
+import { Button } from '@mui/material';
 function App() {
-    const [resultText, setResultText] = useState("Please enter your name below 👇");
     const [file, setFile] = useState<File | undefined>();
     const updateName = (e: any) => {
         console.log(e.target.files)
@@ -24,11 +24,10 @@ function App() {
 
     return (
         <div id="App">
-            <img src={logo} id="logo" alt="logo" />
-            <div id="result" className="result">{resultText}</div>
+            {/* <img src={logo} id="logo" alt="logo" /> */}
             <div id="input" className="input-box">
-                <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="file" />
-                <button className="btn" onClick={greet}>Greet</button>
+                <input id="name" className="input py-[4]" onChange={updateName} autoComplete="off" name="input" type="file" />
+                <Button variant="contained" onClick={greet}>Greet</Button>
             </div>
         </div>
     )

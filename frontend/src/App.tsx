@@ -1,20 +1,36 @@
 import { useState } from 'react';
 import './App.css';
-import { GetPresignedUrl } from "../wailsjs/go/main/App";
+import { GetPresignedUrl, GetAssets } from "../wailsjs/go/main/App";
 import axios from 'axios';
 import { Button } from '@mui/material';
 import MiniDrawer from './components/drawer';
 import { PlayArrow } from '@mui/icons-material';
+import { useEffect } from 'react';
+
+type Video = {
+    Title: string;
+    Source: string;
+    Size: number;
+    Type: string;
+    Thumbnail: string;
+}
+
 function App() {
     const [file, setFile] = useState<File | undefined>();
+    const [videos, setVideos] = useState<Video[] | undefined>();
     const updateName = (e: any) => {
-        console.log(e.target.files)
         setFile(e.target.files[0]);
     }
     const updateResultText = async (result: string) => {
         await axios.put(result, file);
     }
-
+    
+    useEffect(() => {
+        GetAssets().then((res) => { 
+            setVideos(res)
+        })
+    }, [])
+   
     function uploadFile() {
         GetPresignedUrl({
             name: file?.name,
@@ -39,6 +55,15 @@ function App() {
                     <PlayArrow />
                 </Button>
             </div>
+            {
+                videos?.map((video, index) => {
+                    return (
+                        <div key={index} className="flex flex-col items-center justify-center gap-2">
+                           <p className="text-white">{video.Title}</p>
+                        </div>
+                    )
+                })
+            }
         </div>
     )
 }

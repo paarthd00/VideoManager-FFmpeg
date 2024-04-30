@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 	"time"
-
+	"strings"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -49,12 +49,15 @@ func NewApp() *App {
 	return &App{}
 }
 
+var DB *gorm.DB
+
 func (a *App) startup(ctx context.Context) {
-	DB, err := Connection()
+	var err error
+	DB, err = Connection()
 	if err != nil {
-		fmt.Println("Error connecting to database:", err)
-		return
+		panic("failed to connect database")
 	}
+
 	DB.AutoMigrate(&Video{})
 	a.ctx = ctx
 }
@@ -99,6 +102,10 @@ func (a *App) GetPresignedUrl(file File) string {
 		fmt.Println("Error generating presigned URL:", err)
 		return ""
 	}
+	
+	assetUrl := strings.Split(url, "?")[0]
+
+	DB.Create(&Video{Title: file.Name, Size: file.Size, Source: assetUrl, Duration: 0, Thumbnail: ""})
 
 	return url
 }

@@ -43,11 +43,8 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) Greet(file File) string {
-	//os load env
+func (a *App) GetPresignedUrl(file File) string {
 	err := godotenv.Load()
-	// create a presigned url with putobject
-	fmt.Println("Creating presigned URL for", os.Getenv("BUCKET_REGION"))
 	s3Config := &aws.Config{
 		Region: aws.String(os.Getenv("BUCKET_REGION")),
 		Credentials: credentials.NewStaticCredentials(
@@ -65,7 +62,6 @@ func (a *App) Greet(file File) string {
 
 	randomString, err := generateRandomString()
 	if err != nil {
-		// handle error
 		fmt.Println("Error generating random string:", err)
 		return ""
 	}
@@ -83,6 +79,5 @@ func (a *App) Greet(file File) string {
 		return ""
 	}
 
-	fmt.Println("The URL is", url)
 	return url
 }

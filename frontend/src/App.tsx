@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import logo from './assets/images/logo-universal.png';
 import './App.css';
-import { Greet } from "../wailsjs/go/main/App";
+import { GetPresignedUrl } from "../wailsjs/go/main/App";
 import axios from 'axios';
 import { Button } from '@mui/material';
+import MiniDrawer from './components/drawer';
 function App() {
     const [file, setFile] = useState<File | undefined>();
     const updateName = (e: any) => {
@@ -14,8 +14,8 @@ function App() {
         await axios.put(result, file);
     }
 
-    function greet() {
-        Greet({
+    function uploadFile() {
+        GetPresignedUrl({
             name: file?.name,
             size: file?.size,
             type: file?.type
@@ -24,11 +24,9 @@ function App() {
 
     return (
         <div id="App">
-            {/* <img src={logo} id="logo" alt="logo" /> */}
-            <div id="input" className="input-box">
-                <input id="name" className="input py-[4]" onChange={updateName} autoComplete="off" name="input" type="file" />
-                <Button variant="contained" onClick={greet}>Greet</Button>
-            </div>
+            <MiniDrawer />
+            <input id="name" className="input py-[4]" onChange={updateName} autoComplete="off" name="input" type="file" />
+            <Button variant="contained" onClick={uploadFile}>Upload</Button>
         </div>
     )
 }

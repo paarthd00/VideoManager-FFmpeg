@@ -15,7 +15,7 @@
 
 - Menu Items
 
-[ ] Video
+[] Video
 
 [ ] Audio
 

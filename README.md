@@ -15,12 +15,12 @@
 
 - Menu Items
 
-[] Video
+- [ ] Video
 
-[ ] Audio
+- [ ] Audio
 
-[ ] History
+- [ ] History
 
-[ ] Profile
+- [ ] Profile
 
-[ ] Settings
+- [ ] Settings

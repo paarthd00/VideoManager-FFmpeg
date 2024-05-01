@@ -23,14 +23,17 @@ function App() {
     }
     const updateResultText = async (result: string) => {
         await axios.put(result, file);
+        GetAssets().then((res) => {
+            setVideos(res)
+        })
     }
-    
+
     useEffect(() => {
-        GetAssets().then((res) => { 
+        GetAssets().then((res) => {
             setVideos(res)
         })
     }, [])
-   
+
     function uploadFile() {
         GetPresignedUrl({
             name: file?.name,
@@ -44,7 +47,7 @@ function App() {
             className="flex flex-col items-center justify-center w-[100%] h-[100%] bg-gray-900"
             id="App">
             <MiniDrawer />
-            <div className='flex w-[100%] justify-center flex-col items-center gap-2'>
+            <div className='flex w-[100%] justify-center items-center gap-2'>
                 <input id="name" className="input py-[4] text-white" onChange={updateName} autoComplete="off" name="input" type="file" />
                 <Button
                     className='flex items-center justify-center'
@@ -55,15 +58,28 @@ function App() {
                     <PlayArrow />
                 </Button>
             </div>
-            {
-                videos?.map((video, index) => {
-                    return (
-                        <div key={index} className="flex flex-col items-center justify-center gap-2">
-                           <p className="text-white">{video.Title}</p>
-                        </div>
-                    )
-                })
-            }
+            <div className="flex flex-col items-center justify-center gap-2 py-4">
+
+                {
+                    videos?.map((video, index) => {
+                        return (
+                            <div key={index} className="flex items-center justify-center gap-2">
+                                <video
+                                    src={video.Source}
+                                    controls
+                                    width="150"
+                                    height="150"
+                                    className="rounded-lg"
+                                ></video>
+                                <div className='flex flex-col gap-2'>
+                                    <p className="text-white">{video.Title}</p>
+                                    <p className="text-white">{video.Size / 1000000}mb</p>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+            </div>
         </div>
     )
 }

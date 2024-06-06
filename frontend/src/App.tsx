@@ -8,6 +8,7 @@ import { PlayArrow } from '@mui/icons-material';
 import { useEffect } from 'react';
 
 type Video = {
+    id: number;
     Title: string;
     Source: string;
     Size: number;
@@ -23,15 +24,12 @@ function App() {
     }
     const updateResultText = async (result: string) => {
         await axios.put(result, file);
-        GetAssets().then((res) => {
-            setVideos(res)
-        })
     }
 
     useEffect(() => {
-        GetAssets().then((res) => {
-            setVideos(res)
-        })
+      GetAssets().then((res)=>{
+        setVideos(res);
+      })
     }, [])
 
     function uploadFile() {
@@ -59,7 +57,6 @@ function App() {
                 </Button>
             </div>
             <div className="flex flex-col items-center justify-center gap-2 py-4">
-
                 {
                     videos?.map((video, index) => {
                         return (
@@ -78,7 +75,7 @@ function App() {
                             </div>
                         )
                     })
-                }
+                } 
             </div>
         </div>
     )

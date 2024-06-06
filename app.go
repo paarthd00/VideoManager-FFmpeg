@@ -6,8 +6,9 @@ import (
 	"encoding/hex"
 	"fmt"
 	"os"
-	"time"
 	"strings"
+	"time"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -31,7 +32,6 @@ type File struct {
 	Type string
 }
 
-// App struct
 type App struct {
 	ctx context.Context
 }
@@ -102,7 +102,7 @@ func (a *App) GetPresignedUrl(file File) string {
 		fmt.Println("Error generating presigned URL:", err)
 		return ""
 	}
-	
+
 	assetUrl := strings.Split(url, "?")[0]
 
 	DB.Create(&Video{Title: file.Name, Size: file.Size, Source: assetUrl, Duration: 0, Thumbnail: ""})
